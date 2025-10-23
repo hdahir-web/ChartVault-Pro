@@ -1,3 +1,28 @@
+from flask import Flask
+from threading import Thread
+import telebot
+
+bot = telebot.TeleBot("8243097610:AAEFbrq5pSnsvyKKGjVy_Zkdu8exfhAio6M")
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot is alive!"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.reply_to(message, "Hello! Bot is running fine.")
+
+keep_alive()
+bot.polling()
+
 import asyncio
 from aiogram.types import FSInputFile, BufferedInputFile
 from aiogram import Bot, Dispatcher, types
@@ -225,3 +250,4 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Bot stopped by user.")
+
